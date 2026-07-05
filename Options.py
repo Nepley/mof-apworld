@@ -17,7 +17,7 @@ class StageUnlock(Choice):
 	[Practice] How the stage unlock are grouped in Practice mode and for the Extra Stage if it's apart
     Global: No group
     By Character: Stage group by character
-	By Shot Type: Stage group by shot type. Need check by shot type or check by difficulty in order to have enough locations. Stages will be unlocked by character if there is not enought location.
+    By Shot Type: Stage group by shot type. Need check by shot type or check by difficulty in order to have enough locations. Stages will be unlocked by character if there is not enought location.
 	"""
 	display_name = "Stage unlock mode"
 	option_global = 0
