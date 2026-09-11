@@ -125,32 +125,31 @@ class EndingRequired(Choice):
 	option_all_shot_types = 2
 	default = 0
 
-# class DeathLink(Toggle):
-# 	"""
-# 	When you die, everyone who enabled death link dies. Of course, the reverse is true too. Can be changed later.
-#     In Spell Practice, you can only receive Death Links.
-# 	"""
-# 	display_name = "Death Link"
+class DeathLink(Toggle):
+	"""
+	When you die, everyone who enabled death link dies. Of course, the reverse is true too. Can be changed later.
+	"""
+	display_name = "Death Link"
 
-# class DeathLinkTrigger(Choice):
-# 	"""
-# 	When does a death link is triggerd. Can be changed later.
-#     Life: Send a death link when losing a life
-#     Game Over: Send a death link when getting a game over
-# 	"""
-# 	display_name = "Death Link Trigger"
-# 	option_life = 0
-# 	option_game_over = 1
-# 	default = 0
+class DeathLinkTrigger(Choice):
+	"""
+	When does a death link is triggerd. Can be changed later.
+    Life: Send a death link when losing a life
+    Game Over: Send a death link when getting a game over
+	"""
+	display_name = "Death Link Trigger"
+	option_life = 0
+	option_game_over = 1
+	default = 0
 
-# class DeathLinkAmnesty(Range):
-# 	"""
-# 	Number of death before sending a DeathLink. Can be changed later.
-# 	"""
-# 	display_name = "DeathLink Amnesty"
-# 	range_start = 0
-# 	range_end = 10
-# 	default = 0
+class DeathLinkAmnesty(Range):
+	"""
+	Number of death before sending a DeathLink. Can be changed later.
+	"""
+	display_name = "DeathLink Amnesty"
+	range_start = 0
+	range_end = 10
+	default = 0
 
 class RingLink(Toggle):
     """
@@ -239,9 +238,9 @@ class Th10Options(PerGameCommonOptions):
 	check_multiple_difficulty: CheckMultipleDifficulty
 	goal: Goal
 	ending_required: EndingRequired
-	# death_link: DeathLink
-	# death_link_trigger: DeathLinkTrigger
-	# death_link_amnesty: DeathLinkAmnesty
+	death_link: DeathLink
+	death_link_trigger: DeathLinkTrigger
+	death_link_amnesty: DeathLinkAmnesty
 	ring_link: RingLink
 	limit_lives: LimitLives
 	traps: Traps

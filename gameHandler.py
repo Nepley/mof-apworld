@@ -3,6 +3,7 @@ from .Variables import *
 from .gameController import gameController
 from .Tools import *
 import asyncio
+import math
 
 class gameHandler:
 	"""Class keeping track of what's unlock for the game and handling interaction with the game."""
@@ -417,16 +418,16 @@ class gameHandler:
 
 	def ayaSpeed(self):
 		self.gameController.setNormalSpeed(self.gameController.getNormalSpeed()*4)
-		self.gameController.setFocusSpeed(self.gameController.getFocusSpeed()/4)
+		self.gameController.setFocusSpeed(math.floor(self.gameController.getFocusSpeed()/4))
 		self.gameController.setNormalSpeedD(self.gameController.getNormalSpeedD()*4)
-		self.gameController.setFocusSpeedD(self.gameController.getFocusSpeedD()/4)
+		self.gameController.setFocusSpeedD(math.floor(self.gameController.getFocusSpeedD()/4))
 
 	def freeze(self):
 		self.lastSpeeds = [self.gameController.getNormalSpeed(), self.gameController.getFocusSpeed(), self.gameController.getNormalSpeedD(), self.gameController.getFocusSpeedD()]
-		self.gameController.setNormalSpeed(0.0)
-		self.gameController.setFocusSpeed(0.0)
-		self.gameController.setNormalSpeedD(0.0)
-		self.gameController.setFocusSpeedD(0.0)
+		self.gameController.setNormalSpeed(0)
+		self.gameController.setFocusSpeed(0)
+		self.gameController.setNormalSpeedD(0)
+		self.gameController.setFocusSpeedD(0)
 
 	def resetSpeed(self):
 		self.gameController.setNormalSpeed(self.lastSpeeds[0])
@@ -509,10 +510,10 @@ class gameHandler:
 	def playSound(self, soundId):
 		self.gameController.setCustomSoundId(soundId)
 
-	# async def killPlayer(self):
-	# 	self.gameController.setKill(True)
-	# 	await asyncio.sleep(0.1)
-	# 	self.gameController.setKill(False)
+	async def killPlayer(self):
+		self.gameController.setKill(True)
+		await asyncio.sleep(0.1)
+		self.gameController.setKill(False)
 
 	def giveCurrentPowerPoint(self, power):
 		"""

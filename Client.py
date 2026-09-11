@@ -42,82 +42,82 @@ class TouhouClientProcessor(ClientCommandProcessor):
 
 		return changed
 
-	# def _cmd_deathlink(self, active = None):
-	# 	"""Toggle DeathLink on or off
-	#     :param active: If "on" or "true", enable DeathLink. If "off" or "false", disable DeathLink."""
-	# 	changed = False
-	# 	if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
-	# 		if active is not None:
-	# 			if active.lower() in ["on", "true"]:
-	# 				if "DeathLink" not in self.ctx.tags:
-	# 					self.ctx.tags.add("DeathLink")
-	# 					self.ctx.death_link_is_active = True
-	# 					changed = True
-	# 				logger.info("DeathLink enabled")
-	# 			elif active.lower() in ("off", "false"):
-	# 				if "DeathLink" in self.ctx.tags:
-	# 					self.ctx.tags.remove("DeathLink")
-	# 					self.ctx.death_link_is_active = False
-	# 					changed = True
-	# 				logger.info("DeathLink disabled")
-	# 			else:
-	# 				logger.error("Invalid argument, use 'on' or 'off'")
+	def _cmd_deathlink(self, active = None):
+		"""Toggle DeathLink on or off
+	    :param active: If "on" or "true", enable DeathLink. If "off" or "false", disable DeathLink."""
+		changed = False
+		if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
+			if active is not None:
+				if active.lower() in ["on", "true"]:
+					if "DeathLink" not in self.ctx.tags:
+						self.ctx.tags.add("DeathLink")
+						self.ctx.death_link_is_active = True
+						changed = True
+					logger.info("DeathLink enabled")
+				elif active.lower() in ("off", "false"):
+					if "DeathLink" in self.ctx.tags:
+						self.ctx.tags.remove("DeathLink")
+						self.ctx.death_link_is_active = False
+						changed = True
+					logger.info("DeathLink disabled")
+				else:
+					logger.error("Invalid argument, use 'on' or 'off'")
 
-	# 			if changed:
-	# 				asyncio.create_task(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
-	# 		else:
-	# 			logger.info(f"DeathLink is {'enabled' if self.ctx.death_link_is_active else 'disabled'}")
-	# 	else:
-	# 		logger.error("DeathLink cannot be changed before connecting to the game and server")
+				if changed:
+					asyncio.create_task(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+			else:
+				logger.info(f"DeathLink is {'enabled' if self.ctx.death_link_is_active else 'disabled'}")
+		else:
+			logger.error("DeathLink cannot be changed before connecting to the game and server")
 
-	# 	return changed
+		return changed
 
-	# def _cmd_deathlink_trigger(self, value = None):
-	# 	"""Get or Set the trigger for the DeayhLink trigger
-	#     :param value: Possibler values are "life" or "gameover"
-	# 	"""
-	# 	if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
-	# 		if value is not None:
-	# 			if value.lower() == "life":
-	# 				self.ctx.death_link_trigger = DEATH_LINK_LIFE
-	# 				logger.info("DeathLink trigger set to 'Life'")
-	# 				return True
-	# 			elif value.lower() == "gameover":
-	# 				self.ctx.death_link_trigger = DEATH_LINK_GAME_OVER
-	# 				logger.info("DeathLink trigger set to 'Game Over'")
-	# 				return True
-	# 			else:
-	# 				logger.error("Invalid argument, use 'life' or 'gameover'")
-	# 				return False
-	# 		else:
-	# 			trigger = "Life" if self.ctx.death_link_trigger == DEATH_LINK_LIFE else "Game Over"
-	# 			logger.info(f"Current DeathLink Trigger: {trigger}")
-	# 			return True
-	# 	else:
-	# 		logger.error("DeathLink amnesty cannot be accessed before connecting to the game and server")
-	# 		return False
+	def _cmd_deathlink_trigger(self, value = None):
+		"""Get or Set the trigger for the DeayhLink trigger
+	    :param value: Possibler values are "life" or "gameover"
+		"""
+		if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
+			if value is not None:
+				if value.lower() == "life":
+					self.ctx.death_link_trigger = DEATH_LINK_LIFE
+					logger.info("DeathLink trigger set to 'Life'")
+					return True
+				elif value.lower() == "gameover":
+					self.ctx.death_link_trigger = DEATH_LINK_GAME_OVER
+					logger.info("DeathLink trigger set to 'Game Over'")
+					return True
+				else:
+					logger.error("Invalid argument, use 'life' or 'gameover'")
+					return False
+			else:
+				trigger = "Life" if self.ctx.death_link_trigger == DEATH_LINK_LIFE else "Game Over"
+				logger.info(f"Current DeathLink Trigger: {trigger}")
+				return True
+		else:
+			logger.error("DeathLink amnesty cannot be accessed before connecting to the game and server")
+			return False
 
-	# def _cmd_deathlink_amnesty(self, value = -1):
-	# 	"""Get or Set the number of death before sending a DeathLink
-	#     :param value: Set the amnesty to this value, must be between 0 and 10."""
-	# 	if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
-	# 		if value == -1:
-	# 			logger.info(f"Current DeathLink amnesty: {self.ctx.death_link_amnesty}")
-	# 			return True
-	# 		else:
-	# 			try:
-	# 				value = int(value)
-	# 				if value < 0 or value > 10:
-	# 					raise ValueError
-	# 				self.ctx.death_link_amnesty = value
-	# 				logger.info(f"New DeathLink amnesty: {value}")
-	# 				return True
-	# 			except ValueError:
-	# 				logger.error("Invalid argument, amnesty must be between 0 and 10")
-	# 				return False
-	# 	else:
-	# 		logger.error("DeathLink amnesty cannot be accessed before connecting to the game and server")
-	# 		return False
+	def _cmd_deathlink_amnesty(self, value = -1):
+		"""Get or Set the number of death before sending a DeathLink
+	    :param value: Set the amnesty to this value, must be between 0 and 10."""
+		if self.ctx.handler is not None and self.ctx.handler.gameController is not None:
+			if value == -1:
+				logger.info(f"Current DeathLink amnesty: {self.ctx.death_link_amnesty}")
+				return True
+			else:
+				try:
+					value = int(value)
+					if value < 0 or value > 10:
+						raise ValueError
+					self.ctx.death_link_amnesty = value
+					logger.info(f"New DeathLink amnesty: {value}")
+					return True
+				except ValueError:
+					logger.error("Invalid argument, amnesty must be between 0 and 10")
+					return False
+		else:
+			logger.error("DeathLink amnesty cannot be accessed before connecting to the game and server")
+			return False
 
 	def _cmd_ringlink(self, active = None):
 		"""Toggle RingLink on or off
@@ -686,22 +686,29 @@ class TouhouContext(CommonContext):
 		Check if the player has won the game.
 		"""
 		goal = self.options['goal']
+		shot_type = self.options['shot_type']
 		type = self.options['ending_required']
 		extra = self.options['extra_stage']
 		characters = CHARACTERS
 
-		normal_a_victory = True
-		normal_b_victory = True
+		normal_victory = True
 		extra_victory = True
+
+		# Failsafe if the ending required is set to all shot type and the shot type are not their own checks.
+		if not shot_type and type == ALL_SHOT_TYPE_ENDING:
+			type = ALL_CHARACTER_ENDING
 
 		if (goal == ENDING_NORMAL or goal == ENDING_ALL):
 			if type == ONE_ENDING:
-				normal_a_victory = False
+				normal_victory = False
 				for character in characters:
-					normal_a_victory = normal_a_victory or self.handler.endings[character][ENDING_NORMAL]
+					normal_victory = normal_victory or self.handler.endings[character][ENDING_NORMAL]
 			elif type == ALL_CHARACTER_ENDING:
 				for character in characters:
-					normal_a_victory = normal_a_victory and self.handler.endings[character][ENDING_NORMAL]
+					normal_victory = normal_victory and self.handler.endings[character][ENDING_NORMAL]
+			elif type == ALL_SHOT_TYPE_ENDING:
+				for character in characters:
+					normal_victory = normal_victory and self.handler.endings[character][ENDING_NORMAL] >= len(SHOTS)
 
 		if (goal == ENDING_EXTRA or goal == ENDING_ALL) and extra != NO_EXTRA:
 			if type == ONE_ENDING:
@@ -711,8 +718,11 @@ class TouhouContext(CommonContext):
 			elif type == ALL_CHARACTER_ENDING:
 				for character in characters:
 					extra_victory = extra_victory and self.handler.endings[character][ENDING_EXTRA]
+			elif type == ALL_SHOT_TYPE_ENDING:
+				for character in CHARACTERS:
+					extra_victory = extra_victory and self.handler.endings[character][ENDING_EXTRA] >= len(SHOTS)
 
-		return normal_a_victory and normal_b_victory and extra_victory
+		return normal_victory and extra_victory
 
 	async def main_loop(self):
 		"""
@@ -965,7 +975,6 @@ class TouhouContext(CommonContext):
 			self.pending_death_link = False
 			onGoingDeathLink = False
 			inLevel = False
-			currentMisses = 0
 			currentLives = 0
 			nb_death = 0
 
@@ -985,7 +994,6 @@ class TouhouContext(CommonContext):
 					# If we enter a level, we set the variables
 					if not inLevel:
 						inLevel = True
-						currentMisses = self.handler.getMisses()
 						currentLives = self.handler.getCurrentLives()
 						onGoingDeathLink = False
 						self.pending_death_link = False
@@ -996,13 +1004,13 @@ class TouhouContext(CommonContext):
 
 					# If a misses has been added, that mean the player has been killed and we check if it was because of the death link
 					# (Receiving a death link is checked by misses as it's more reliable and the player could have deathbomb the death link)
-					if currentMisses < self.handler.getMisses():
+					if self.handler.getCurrentLives() < currentLives or (self.handler.getCurrentLives() == 255 and currentLives != self.handler.getCurrentLives()):
 						# If the player is killed by a death link, we tell the loop it's done
 						if onGoingDeathLink:
 							onGoingDeathLink = False
 							self.pending_death_link = False
 						else:
-							if self.death_link_trigger == DEATH_LINK_LIFE or (self.death_link_trigger == DEATH_LINK_GAME_OVER and currentLives == 0):
+							if self.death_link_trigger == DEATH_LINK_LIFE or (self.death_link_trigger == DEATH_LINK_GAME_OVER and self.handler.getCurrentLives() == 255):
 								nb_death += 1
 								if nb_death >= self.death_link_amnesty:
 									await self.send_death_link()
@@ -1010,14 +1018,18 @@ class TouhouContext(CommonContext):
 								else:
 									logger.info(f"DeathLink: {nb_death}/{self.death_link_amnesty}")
 
-						currentMisses += 1
+						currentLives -= 1
 						await asyncio.sleep(1)  # We wait a little
 					# If no death has occured but a death link is pending, we try to kill the player
 					elif self.pending_death_link:
 						await self.handler.killPlayer()
 
+						# If the player has died, we play the death sound, since it doesn't play otherwise
+						if self.handler.getCurrentLives() < currentLives or (self.handler.getCurrentLives() == 255 and currentLives != self.handler.getCurrentLives()):
+							self.handler.playSound(0x04)
+
 					# If the number of lives changed, we update it.
-					if currentLives != self.handler.getCurrentLives():
+					if currentLives < self.handler.getCurrentLives():
 						currentLives = self.handler.getCurrentLives()
 				else:
 					inLevel = False
@@ -1112,9 +1124,6 @@ class TouhouContext(CommonContext):
 			except Exception as e:
 				await asyncio.sleep(2)
 
-class APQuestControlsView(BoxLayout):
-    border_on = False
-
 class TouhouManager(GameManager):
 	ctx: TouhouContext
 
@@ -1171,7 +1180,7 @@ async def game_watcher(ctx: TouhouContext):
 			loops.append(asyncio.create_task(ctx.main_loop()))
 			loops.append(asyncio.create_task(ctx.menu_loop()))
 			loops.append(asyncio.create_task(ctx.trap_loop()))
-			# loops.append(asyncio.create_task(ctx.death_link_loop()))
+			loops.append(asyncio.create_task(ctx.death_link_loop()))
 			loops.append(asyncio.create_task(ctx.ring_link_loop()))
 
 			# We update the locations checked if there was any location that was already checked before the connection
@@ -1179,15 +1188,15 @@ async def game_watcher(ctx: TouhouContext):
 			ctx.updateStageList()
 
 			# Activating Death Link / Ring Link if needed
-			# if ctx.options['death_link']:
-			# 	await ctx.update_death_link(True)
-			# 	ctx.death_link_is_active = True
+			if ctx.options['death_link']:
+				await ctx.update_death_link(True)
+				ctx.death_link_is_active = True
 
-			# if ctx.options['death_link_amnesty']:
-			# 	ctx.death_link_amnesty = ctx.options['death_link_amnesty']
+			if ctx.options['death_link_amnesty']:
+				ctx.death_link_amnesty = ctx.options['death_link_amnesty']
 
-			# if ctx.options['death_link_trigger']:
-			# 	ctx.death_link_trigger = ctx.options['death_link_trigger']
+			if ctx.options['death_link_trigger']:
+				ctx.death_link_trigger = ctx.options['death_link_trigger']
 
 			if ctx.options['ring_link']:
 				ctx.setRingLinkTag(True)

@@ -32,6 +32,11 @@ class TWorld(World):
 	location_name_to_id = {name: id for name, id in location_table.items()}
 
 	def fill_slot_data(self) -> dict:
+		# Failsafe if the ending required is set to all shot type and the shot type are not their own checks.
+		ending_required = self.options.ending_required.value
+		if not self.options.shot_type.value and self.options.ending_required.value == ALL_SHOT_TYPE_ENDING:
+			ending_required = ALL_CHARACTER_ENDING
+
 		data = {
 			"mode": self.options.mode.value,
 			"stage_unlock": self.options.stage_unlock.value,
@@ -46,10 +51,10 @@ class TWorld(World):
 			"difficulty_check": self.options.difficulty_check.value,
 			"check_multiple_difficulty": self.options.check_multiple_difficulty.value,
 			"goal": self.options.goal.value,
-			"ending_required": self.options.ending_required.value,
-			# "death_link": self.options.death_link.value,
-			# "death_link_trigger": self.options.death_link_trigger.value,
-			# "death_link_amnesty": self.options.death_link_amnesty.value,
+			"ending_required": ending_required,
+			"death_link": self.options.death_link.value,
+			"death_link_trigger": self.options.death_link_trigger.value,
+			"death_link_amnesty": self.options.death_link_amnesty.value,
 			"ring_link": self.options.ring_link.value,
 			"limit_lives": self.options.limit_lives.value,
 		}
@@ -221,7 +226,7 @@ class TWorld(World):
 			number_traps = int(remaining_locations * traps / 100)
 
 			if number_traps > 0:
-				trapList = self.random.choices(["-50% Power Point", "-1 Life", "Reverse Movement", "Aya Speed", "Freeze", "Power Point Drain"], weights=[power_point_trap, life_trap, reverse_movement_trap, aya_speed_trap, freeze_trap], k=number_traps)
+				trapList = self.random.choices(["-50% Power Point", "-1 Life", "Reverse Movement", "Aya Speed", "Freeze"], weights=[power_point_trap, life_trap, reverse_movement_trap, aya_speed_trap, freeze_trap], k=number_traps)
 				for trap in trapList:
 					item_pool.append(self.create_item(trap))
 

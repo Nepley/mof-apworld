@@ -250,7 +250,7 @@ class gameController:
 		self.addrFocusCondition = self.pm.base_address+ADDR_FOCUS_CONDITION
 		self.addrExtraMode = self.pm.base_address+ADDR_EXTRA_MODE
 
-		# self.addrKillCondition = self.pm.base_address+ADDR_KILL_CONDITION
+		self.addrKillCondition = self.pm.base_address+ADDR_KILL_CONDITION
 
 		self.addrExtraLockCharacterHack = [
 			self.pm.base_address+ADDR_EXTRA_LOCK_CHARACTER_HACK[0],
@@ -569,19 +569,19 @@ class gameController:
 
 	def getNormalSpeed(self):
 		self.addrNormalSpeed = getPointerAddress(self.pm, self.pm.base_address+ADDR_NORMAL_SPEED[0], ADDR_NORMAL_SPEED[1:])
-		return int.from_bytes(self.pm.read_bytes(self.addrNormalSpeed, 4))
+		return self.pm.read_int(self.addrNormalSpeed)
 
 	def getFocusSpeed(self):
 		self.addrFocusSpeed = getPointerAddress(self.pm, self.pm.base_address+ADDR_FOCUS_SPEED[0], ADDR_FOCUS_SPEED[1:])
-		return int.from_bytes(self.pm.read_bytes(self.addrFocusSpeed, 4))
+		return self.pm.read_int(self.addrFocusSpeed)
 
 	def getNormalSpeedD(self):
 		self.addrNormalSpeedD = getPointerAddress(self.pm, self.pm.base_address+ADDR_NORMAL_SPEED_D[0], ADDR_NORMAL_SPEED_D[1:])
-		return int.from_bytes(self.pm.read_bytes(self.addrNormalSpeedD, 4))
+		return self.pm.read_int(self.addrNormalSpeedD)
 
 	def getFocusSpeedD(self):
 		self.addrFocusSpeedD = getPointerAddress(self.pm, self.pm.base_address+ADDR_FOCUS_SPEED_D[0], ADDR_FOCUS_SPEED_D[1:])
-		return int.from_bytes(self.pm.read_bytes(self.addrFocusSpeedD, 4))
+		return self.pm.read_int(self.addrFocusSpeedD)
 
 	def getCustomSoundId(self):
 		return int.from_bytes(self.pm.read_bytes(self.addrCustomSoundId, 1))
@@ -651,28 +651,28 @@ class gameController:
 
 	def setNormalSpeed(self, newNormalSpeed):
 		self.addrNormalSpeed = getPointerAddress(self.pm, self.pm.base_address+ADDR_NORMAL_SPEED[0], ADDR_NORMAL_SPEED[1:])
-		self.pm.write_float(self.addrNormalSpeed, newNormalSpeed)
+		self.pm.write_int(self.addrNormalSpeed, newNormalSpeed)
 
 	def setFocusSpeed(self, newFocusSpeed):
 		self.addrFocusSpeed = getPointerAddress(self.pm, self.pm.base_address+ADDR_FOCUS_SPEED[0], ADDR_FOCUS_SPEED[1:])
-		self.pm.write_float(self.addrFocusSpeed, newFocusSpeed)
+		self.pm.write_int(self.addrFocusSpeed, newFocusSpeed)
 
 	def setNormalSpeedD(self, newNormalSpeedD):
 		self.addrNormalSpeedD = getPointerAddress(self.pm, self.pm.base_address+ADDR_NORMAL_SPEED_D[0], ADDR_NORMAL_SPEED_D[1:])
-		self.pm.write_float(self.addrNormalSpeedD, newNormalSpeedD)
+		self.pm.write_int(self.addrNormalSpeedD, newNormalSpeedD)
 
 	def setFocusSpeedD(self, newFocusSpeedD):
 		self.addrFocusSpeedD = getPointerAddress(self.pm, self.pm.base_address+ADDR_FOCUS_SPEED_D[0], ADDR_FOCUS_SPEED_D[1:])
-		self.pm.write_float(self.addrFocusSpeedD, newFocusSpeedD)
+		self.pm.write_int(self.addrFocusSpeedD, newFocusSpeedD)
 
 	def setPracticeStageScore(self, characterId, shotId, difficultyId, stageId, newScore):
 		return self.pm.write_int(self.addrPracticeScore[characterId][shotId][difficultyId][stageId], newScore)
 
-	# def setKill(self, active):
-	# 	if active:
-	# 		self.pm.write_bytes(self.addrKillCondition, bytes([0x90, 0x90]), 2)
-	# 	else:
-	# 		self.pm.write_bytes(self.addrKillCondition, bytes([0xEB, 0x44]), 2)
+	def setKill(self, active):
+		if active:
+			self.pm.write_bytes(self.addrKillCondition, bytes([0x90, 0x90, 0x90, 0x90, 0x90]), 5)
+		else:
+			self.pm.write_bytes(self.addrKillCondition, bytes([0xE9, 0xDC, 0x02, 0x00, 0x00]), 5)
 
 	def setLockToAllDifficulty(self):
 		self.pm.write_bytes(self.addrExtraLockCharacterHack[0], bytes([0x90, 0x90]), 2)
